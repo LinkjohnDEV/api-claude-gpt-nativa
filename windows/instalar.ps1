@@ -1,7 +1,8 @@
-# Instalador Lauren API para Windows (PowerShell) - v1.2.1
+# Instalador Lauren API para Windows (PowerShell) - v1.2.2
 # Base: payload-servidor-gateway v7.0 (repositório lauren-instalador). Adaptado para a Lauren API em 19/11/2026:
 #   - o endereço já vem fixo (https://api.ialauren.com); a chave NÃO fica no arquivo: ela é pedida na hora, digitada escondida;
 #   - mostra o que vai fazer e espera um Enter antes de mexer em qualquer arquivo (use -Sim para pular).
+#   - v1.2.2: a janela de Administrador fica aberta no fim (antes fechava sozinha e a pessoa nao via o resultado).
 #   - v1.2.1: sem Administrador o instalador PARA e oferece reabrir sozinho como Administrador (antes so avisava e instalava pela metade).
 #   - v1.2: use_responses_lite = false em todos os modelos do catalogo (sem isso o Codex Desktop manda o pedido sem ferramentas); limpeza segura
 #     (nao apaga mais .toml nem arquivos de politica que nao sao desta instalacao).
@@ -124,7 +125,7 @@ function Backup-File([string]$Path, [string]$Name, [string]$Dir, [hashtable]$Map
 # O Codex Desktop so usa a Lauren por completo com a regra do sistema em C:\ProgramData (precisa de Administrador). Sem ele a instalacao fica pela metade,
 # entao o instalador PARA e oferece reabrir sozinho como Administrador (o Windows mostra a janela de confirmacao). Quem so quer Claude Code/OpenCode
 # pode seguir sem Administrador: -SemAdmin ou GATEWAY_SEM_ADMIN=1.
-$urlOficial = 'https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.2.1/windows/instalar.ps1'
+$urlOficial = 'https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.2.2/windows/instalar.ps1'
 $eAdmin = $false
 try { $eAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) } catch { }
 $ehWindows = ($PSVersionTable.PSEdition -ne 'Core') -or ($null -ne $IsWindows -and $IsWindows)
@@ -138,7 +139,7 @@ if ($ehWindows -and -not $eAdmin -and -not $pularAdmin -and ($Uninstall -or $Glo
     [void](Read-Host 'Enter para continuar como Administrador')
     $cmdAdmin = if ($Uninstall) { '& ([scriptblock]::Create((irm ' + $urlOficial + '))) -Uninstall' } else { 'irm ' + $urlOficial + ' | iex' }
     try {
-        Start-Process -FilePath 'powershell.exe' -Verb RunAs -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', $cmdAdmin) -ErrorAction Stop
+        Start-Process -FilePath 'powershell.exe' -Verb RunAs -ArgumentList @('-NoProfile', '-NoExit', '-ExecutionPolicy', 'Bypass', '-Command', $cmdAdmin) -ErrorAction Stop
         Write-Output 'Abri uma janela como Administrador. Continue nela; pode fechar esta.'
     } catch {
         Write-Output 'Nao consegui abrir como Administrador (a confirmacao foi cancelada?). Abra o PowerShell com botao direito > "Executar como administrador" e rode o comando de novo.'

@@ -2,7 +2,7 @@
 
 ## O Codex responde "vou abrir o site…" (ou "deixe-me carregar as instruções") e não faz nada
 **Causa:** o Codex mandou o pedido **sem a lista de ferramentas**. Acontece quando o catálogo de modelos tem `use_responses_lite = true`.
-**Solução:** use a **v1.2.1** ou mais nova do instalador (ela corrige isso) e **feche o Codex por completo** (inclusive o ícone perto do relógio) antes de abrir de novo.
+**Solução:** use a **v1.2.2** ou mais nova do instalador (ela corrige isso) e **feche o Codex por completo** (inclusive o ícone perto do relógio) antes de abrir de novo.
 **Se estava na v1.0 ou v1.1,** rode o comando da versão atual por cima.
 
 ## "A execução de scripts está desabilitada"

@@ -2,6 +2,9 @@
 
 Versões do instalador do Windows. Cada versão é uma *tag* que **nunca é alterada**: para corrigir algo, sai uma versão nova.
 
+## v1.2.2 (2026-11-19)
+- A janela de **administrador** agora **fica aberta** no fim da instalação. Antes ela fechava sozinha e a pessoa não via o resultado (nem erro, se houvesse).
+
 ## v1.2.1 (2026-11-19)
 - **Administrador:** sem permissão de administrador o instalador agora **para** e oferece **reabrir sozinho como administrador** (antes só avisava e instalava pela metade). Também vale para o desinstalar. Para seguir sem administrador: `-SemAdmin` ou `GATEWAY_SEM_ADMIN=1`.
 

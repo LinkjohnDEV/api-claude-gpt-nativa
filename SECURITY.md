@@ -13,7 +13,7 @@ Respondemos em até **5 dias úteis**. Se o problema for real, publicamos a corr
 
 Você roda um script que **altera arquivos do seu computador**. Por isso:
 - Leia o script antes de rodar (`windows/instalar.ps1`) e confira o SHA-256 publicado no README.
-- Use sempre o comando com a **versão fixa** (`v1.2.1`), nunca com `main`.
+- Use sempre o comando com a **versão fixa** (`v1.2.2`), nunca com `main`.
 - A sua chave **não vai** no comando nem no repositório. Fica na variável de ambiente do seu usuário e nos arquivos de configuração dos programas.
 
 ## Riscos conhecidos (por decisão de projeto)
