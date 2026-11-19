@@ -1,7 +1,8 @@
-# Instalador Lauren API para Windows (PowerShell) - v1.2
+# Instalador Lauren API para Windows (PowerShell) - v1.2.1
 # Base: payload-servidor-gateway v7.0 (repositório lauren-instalador). Adaptado para a Lauren API em 19/11/2026:
 #   - o endereço já vem fixo (https://api.ialauren.com); a chave NÃO fica no arquivo: ela é pedida na hora, digitada escondida;
 #   - mostra o que vai fazer e espera um Enter antes de mexer em qualquer arquivo (use -Sim para pular).
+#   - v1.2.1: sem Administrador o instalador PARA e oferece reabrir sozinho como Administrador (antes so avisava e instalava pela metade).
 #   - v1.2: use_responses_lite = false em todos os modelos do catalogo (sem isso o Codex Desktop manda o pedido sem ferramentas); limpeza segura
 #     (nao apaga mais .toml nem arquivos de politica que nao sao desta instalacao).
 #   - v1.1: avisa quando falta Administrador (a regra do sistema do Codex Desktop em ProgramData so e gravada como Administrador) e confere
@@ -12,6 +13,7 @@
 param(
     [switch]$Uninstall,
     [switch]$Sim,
+    [switch]$SemAdmin,
     [string]$Endpoint       = $(if ($env:GATEWAY_ENDPOINT)       { $env:GATEWAY_ENDPOINT }       else { 'https://api.ialauren.com' }),
     [string]$ApiKey         = $(if ($env:GATEWAY_API_KEY)        { $env:GATEWAY_API_KEY }        else { '__INJECT_API_KEY__' }),
     [string]$Model          = $(if ($env:GATEWAY_MODEL)          { $env:GATEWAY_MODEL }          else { '__INJECT_MODEL__' }),
@@ -118,6 +120,32 @@ function Backup-File([string]$Path, [string]$Name, [string]$Dir, [hashtable]$Map
     }
 }
 
+# --- Administrador (v1.2.1) ---------------------------------------------------------------------------------------------
+# O Codex Desktop so usa a Lauren por completo com a regra do sistema em C:\ProgramData (precisa de Administrador). Sem ele a instalacao fica pela metade,
+# entao o instalador PARA e oferece reabrir sozinho como Administrador (o Windows mostra a janela de confirmacao). Quem so quer Claude Code/OpenCode
+# pode seguir sem Administrador: -SemAdmin ou GATEWAY_SEM_ADMIN=1.
+$urlOficial = 'https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.2.1/windows/instalar.ps1'
+$eAdmin = $false
+try { $eAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) } catch { }
+$ehWindows = ($PSVersionTable.PSEdition -ne 'Core') -or ($null -ne $IsWindows -and $IsWindows)
+$pularAdmin = $SemAdmin -or ($env:GATEWAY_SEM_ADMIN -eq '1')
+if ($ehWindows -and -not $eAdmin -and -not $pularAdmin -and ($Uninstall -or $GlobalPolicy -eq '1')) {
+    Write-Output ''
+    Write-Output '[ATENCAO] Este instalador precisa de permissao de Administrador para o Codex Desktop funcionar por completo.'
+    Write-Output '          Tecle Enter para reabrir como Administrador (o Windows vai pedir uma confirmacao: clique em Sim),'
+    Write-Output '          ou Ctrl+C para cancelar.'
+    Write-Output '          (So Claude Code/OpenCode, sem Administrador: feche e rode com  $env:GATEWAY_SEM_ADMIN=''1''  antes do comando.)'
+    [void](Read-Host 'Enter para continuar como Administrador')
+    $cmdAdmin = if ($Uninstall) { '& ([scriptblock]::Create((irm ' + $urlOficial + '))) -Uninstall' } else { 'irm ' + $urlOficial + ' | iex' }
+    try {
+        Start-Process -FilePath 'powershell.exe' -Verb RunAs -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', $cmdAdmin) -ErrorAction Stop
+        Write-Output 'Abri uma janela como Administrador. Continue nela; pode fechar esta.'
+    } catch {
+        Write-Output 'Nao consegui abrir como Administrador (a confirmacao foi cancelada?). Abra o PowerShell com botao direito > "Executar como administrador" e rode o comando de novo.'
+    }
+    return
+}
+
 if ($Uninstall) {
     Write-Output '[LOG] Restaurando padrao original...'
     $reqSys = Join-Path ([Environment]::GetFolderPath('CommonApplicationData')) 'OpenAI\Codex\requirements.toml'
@@ -157,9 +185,6 @@ if ($Uninstall) {
     Write-Output 'GATEWAY_RESTORE_OK'
     exit 0
 }
-
-$eAdmin = $false
-try { $eAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator) } catch { }
 
 if ([string]::IsNullOrWhiteSpace($ApiKey)) {
     Write-Output ''
@@ -222,7 +247,7 @@ if (-not $Sim) {
     Write-Output '  O Codex sera fechado durante a instalacao.'
     if (-not $eAdmin -and $GlobalPolicy -eq '1') {
         Write-Output ''
-        Write-Output '[AVISO] Voce NAO esta como Administrador. A regra do sistema do Codex Desktop (C:\ProgramData\OpenAI\Codex) pode nao ser gravada,'
+        Write-Output '[AVISO] Voce escolheu seguir SEM Administrador. A regra do sistema do Codex Desktop (C:\ProgramData\OpenAI\Codex) nao sera gravada,'
         Write-Output '        e o Codex Desktop pode nao usar a Lauren. Para instalar completo: tecle Ctrl+C, abra o PowerShell com botao direito'
         Write-Output '        > "Executar como administrador" e rode o comando de novo.'
     }

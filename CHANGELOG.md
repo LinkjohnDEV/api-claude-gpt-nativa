@@ -2,6 +2,9 @@
 
 Versões do instalador do Windows. Cada versão é uma *tag* que **nunca é alterada**: para corrigir algo, sai uma versão nova.
 
+## v1.2.1 (2026-11-19)
+- **Administrador:** sem permissão de administrador o instalador agora **para** e oferece **reabrir sozinho como administrador** (antes só avisava e instalava pela metade). Também vale para o desinstalar. Para seguir sem administrador: `-SemAdmin` ou `GATEWAY_SEM_ADMIN=1`.
+
 ## v1.2.0 (2026-11-19)
 - **Correção principal:** o catálogo de modelos agora sai com `use_responses_lite = false` em todos os modelos. Com `true` (como vem no catálogo nativo de alguns modelos do Codex Desktop) o Codex manda o pedido **sem a lista de ferramentas**, e o modelo responde "vou abrir o site…" sem conseguir fazer nada.
 - **Limpeza segura:** a instalação não apaga mais todos os arquivos `.toml` da pasta do Codex, nem todos os `*-models-*.json`, nem os outros arquivos da pasta de política do sistema. Só mexe no que é dela.

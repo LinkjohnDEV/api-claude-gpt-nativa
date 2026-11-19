@@ -5,7 +5,7 @@
 **Use o Codex, o Claude Code e o OpenCode com a [Lauren API](https://api.ialauren.com). Um comando, sem baixar programa.**
 
 [![Licença MIT](https://img.shields.io/badge/licença-MIT-green.svg)](LICENSE)
-![Windows](https://img.shields.io/badge/Windows-v1.2.0-blue)
+![Windows](https://img.shields.io/badge/Windows-v1.2.1-blue)
 ![Mac e Linux](https://img.shields.io/badge/Mac%20e%20Linux-em%20breve-lightgrey)
 
 </div>
@@ -27,13 +27,14 @@ Você cola **um comando**, digita a sua chave (ela **não aparece na tela** e **
 
 ## Instalar no Windows
 
-1. Abra o **PowerShell** como **administrador** (botão direito no PowerShell > *Executar como administrador*). Sem administrador o instalador avisa e o Codex Desktop pode não usar a Lauren.
+1. Abra o **PowerShell** (menu Iniciar, digite *PowerShell*).
 2. Cole e tecle **Enter**:
 
 ```powershell
-irm https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.2.0/windows/instalar.ps1 | iex
+irm https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.2.1/windows/instalar.ps1 | iex
 ```
 
+   Se você **não** abriu como administrador, o instalador **para e oferece reabrir sozinho como administrador** (o Windows pede uma confirmação: clique em *Sim*). Isso é necessário para o Codex Desktop funcionar por completo. Quem só quer Claude Code ou OpenCode pode seguir sem administrador: `$env:GATEWAY_SEM_ADMIN='1'` antes do comando.
 3. Cole a sua chave (começa com `lp_`) e tecle Enter.
 4. Leia o resumo e tecle **Enter** para instalar (ou `Ctrl+C` para cancelar).
 5. **Feche o Codex por completo** (inclusive o ícone perto do relógio) e abra de novo.
@@ -43,7 +44,7 @@ A chave é testada **antes** de qualquer alteração. Se estiver errada, nada é
 ### Desfazer
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.2.0/windows/instalar.ps1))) -Uninstall
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.2.1/windows/instalar.ps1))) -Uninstall
 ```
 
 Volta os arquivos **exatamente** ao que eram antes da primeira instalação, remove as ferramentas e a variável da chave. O que não existia antes é renomeado (`.removido-data`), nunca apagado.
@@ -81,7 +82,7 @@ Busca na web, leitura e edição de arquivos, busca de código, memória, racioc
 SHA-256 de `windows/instalar.ps1` nesta versão:
 
 ```
-320c0d8a6b5e339b2c70de71d2d1e7fe7a6f92f18ecfc8fd1644c28ada359442
+2e4beec2b1d364d91c8e5dcb8f061a8a44abb8d17eb0c89ec75617472c25c95c
 ```
 
 ```powershell
