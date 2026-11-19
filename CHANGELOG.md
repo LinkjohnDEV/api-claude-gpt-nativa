@@ -2,6 +2,11 @@
 
 Versões do instalador do Windows. Cada versão é uma *tag* que **nunca é alterada**: para corrigir algo, sai uma versão nova.
 
+## v1.3.0 (2026-11-19)
+- **Instalador para Mac e Linux** (`unix/instalar.sh`, versão 1.0.0 dele): Codex, Claude Code e OpenCode, ferramentas extras, backup do original e desinstalar. O `config.toml` do Codex é mesclado.
+- O código-fonte das ferramentas extras passa a estar em `ferramentas/` (antes só existia embutido no instalador do Windows).
+- O instalador do Windows continua o mesmo da v1.2.2.
+
 ## v1.2.2 (2026-11-19)
 - A janela de **administrador** agora **fica aberta** no fim da instalação. Antes ela fechava sozinha e a pessoa não via o resultado (nem erro, se houvesse).
 

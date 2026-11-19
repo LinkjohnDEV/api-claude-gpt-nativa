@@ -20,6 +20,7 @@ Você roda um script que **altera arquivos do seu computador**. Por isso:
 
 1. **Ferramentas sem confirmação.** As ferramentas de execução de comandos, de controle do computador (mouse e teclado) e de remoção de pastas rodam **sem pedir confirmação a cada uso**. Uma instrução maliciosa escondida em uma página, e-mail ou arquivo que o modelo leia (*prompt injection*) pode tentar usá-las. **Use em computador de confiança.**
 2. **Chave em texto no computador.** A regra do sistema do Codex Desktop (`C:\ProgramData\OpenAI\Codex\requirements.toml`) guarda a chave em texto, legível por qualquer usuário do computador. Não use em computador compartilhado.
-3. **Conversas antigas do Codex** têm o nome do provedor reescrito (só o rótulo).
+3. **No Mac e no Linux** a chave fica em texto em `~/.gateway/env`, `~/.codex/config.toml`, `~/.claude/settings.json` e `~/.config/opencode/opencode.json`, todos com permissão **só do seu usuário (600)**. Quem tiver acesso à sua conta no computador a vê.
+4. **No Windows, conversas antigas do Codex** têm o nome do provedor reescrito (só o rótulo).
 
 Se você acha que algum desses pontos deveria ser diferente, **abra uma issue**: são decisões em aberto, não segredos.

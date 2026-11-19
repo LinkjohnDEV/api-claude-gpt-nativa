@@ -6,7 +6,7 @@
 
 [![Licença MIT](https://img.shields.io/badge/licença-MIT-green.svg)](LICENSE)
 ![Windows](https://img.shields.io/badge/Windows-v1.2.2-blue)
-![Mac e Linux](https://img.shields.io/badge/Mac%20e%20Linux-em%20breve-lightgrey)
+![Mac e Linux](https://img.shields.io/badge/Mac%20e%20Linux-v1.0.0-blue)
 
 </div>
 
@@ -49,14 +49,43 @@ A chave é testada **antes** de qualquer alteração. Se estiver errada, nada é
 
 Volta os arquivos **exatamente** ao que eram antes da primeira instalação, remove as ferramentas e a variável da chave. O que não existia antes é renomeado (`.removido-data`), nunca apagado.
 
-## Mac e Linux
+## Instalar no Mac e no Linux
 
-**Em breve.** Está sendo feito e testado. Acompanhe em [Releases](../../releases) e nas [Issues](../../issues).
+No **Terminal**:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.3.0/unix/instalar.sh | bash
+```
+
+Ele pede a sua chave (escondida), mostra o que vai fazer e espera um **Enter**. Depois abra um terminal novo e **feche o Codex por completo** antes de abrir de novo.
+
+**Desfazer:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/LinkjohnDEV/api-claude-gpt-nativa/v1.3.0/unix/instalar.sh | bash -s -- --uninstall
+```
+
+Opções: `--yes` (não pergunta), `--targets=codex,claude-code,opencode`, `--endpoint=https://...`. A chave também pode vir da variável `GATEWAY_API_KEY`.
+
+**Diferenças para o Windows:**
+- O seu `~/.codex/config.toml` é **mesclado**, não reescrito: o que você já tem fica, e só o que conflita é comentado (volta ao desinstalar).
+- Sem as partes que só existem no Windows (controle do computador e a regra do sistema em `ProgramData`). Não precisa de administrador nem de `sudo`.
+- Não mexe no histórico de conversas do Codex.
+- A chave fica em `~/.gateway/env` (permissão só sua) e é lida pelo seu terminal; no Mac também vai para os aplicativos abertos pelo Dock (`launchctl`, até reiniciar).
+
+**Testado** em Linux (Debian, Node 20), incluindo instalar duas vezes e desinstalar voltando os arquivos idênticos ao original. **No Mac ainda não foi testado em máquina real**: se der problema, abra uma [issue](../../issues/new/choose).
+
+SHA-256 de `unix/instalar.sh` nesta versão:
+
+```
+5bad6d38279b889e9c100b617aa8c3f41883c2b90b62749ea6a28c658cccac52
+```
 
 ## Requisitos
 
-- Windows 10 ou 11 com PowerShell 5.1 ou mais novo (já vem no Windows)
-- **Node.js** (https://nodejs.org), para as ferramentas extras
+- **Windows:** 10 ou 11 com PowerShell 5.1 ou mais novo (já vem no Windows)
+- **Mac e Linux:** `curl` e **Node.js 18 ou mais novo**
+- **Node.js** (https://nodejs.org) também é usado pelas ferramentas extras
 - Uma chave da Lauren API
 
 ## O que muda no seu computador
@@ -72,6 +101,8 @@ Volta os arquivos **exatamente** ao que eram antes da primeira instalação, rem
 Os arquivos que ele **reescreve** (`config.toml`, `AGENTS.md`, as configurações do Claude e do OpenCode) ficam salvos no backup antes. Ele **não apaga** nenhum outro arquivo seu.
 
 ## Ferramentas extras incluídas
+
+O código-fonte de todas está em [`ferramentas/`](ferramentas/) para você ler antes de instalar.
 
 Busca na web, leitura e edição de arquivos, busca de código, memória, raciocínio em etapas, documentação (Context7), REPL de Node, **execução de comandos no PowerShell**, **controle do computador (mouse e teclado)** e **remoção de pastas**.
 
