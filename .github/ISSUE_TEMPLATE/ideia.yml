@@ -1,0 +1,9 @@
+name: Sugerir uma ideia
+description: Uma melhoria ou um novo programa suportado
+labels: ["ideia"]
+body:
+  - type: textarea
+    id: ideia
+    attributes:
+      label: Qual é a ideia e que problema ela resolve?
+    validations: { required: true }
